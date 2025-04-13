@@ -34,7 +34,7 @@ mpl.rcParams['axes.unicode_minus'] = False    # 负号显示
 
 
 # 读取文本文件 
-data = np.loadtxt('egg_d13_B24_t3.txt', skiprows=2, encoding="utf-8")  # 跳过头部描述行
+data = np.loadtxt('d21_chick28_t1.txt', skiprows=2, encoding="utf-8")  # 跳过头部描述行
 fs = 1000  # 采样率
 
 # ===============================================
@@ -42,8 +42,8 @@ fs = 1000  # 采样率
 # ===============================================
 
 # 带通滤波器设计 (0.5-30Hz)
-nyq = 0.5 * fs
-b, a = signal.butter(3, [0.5/nyq, 30/nyq], btype='bandpass')
+nyq = 0.1 * fs
+b, a = signal.butter(3, [0.1/nyq, 30/nyq], btype='bandpass')
 signals = signal.filtfilt(b, a, data, axis=0)
 
 # 设计带阻滤波器（滤除50Hz工频干扰）
@@ -104,6 +104,8 @@ signals = signal.filtfilt(b_stop, a_stop, signals, axis=0)
     
 # plt.tight_layout()
 
+
+
 # ===============================================
 # 3. 小波变换参数设置
 # ===============================================
@@ -113,7 +115,7 @@ plt.figure('Wavelet Analysis', figsize=(10, 8), facecolor='w')
 wavelet = 'morl'  # 选择Morlet小波（适合时频分析）
 scales = np.arange(1, 128)  # 尺度范围
 frequencies = pywt.scale2frequency(wavelet, scales) * fs  # 转换为实际频率
-freq_lim = 20  # 最大显示频率
+freq_lim = 30  # 最大显示频率
 dB_range = [-40, 40]  # 动态范围
 
 for ch in range(2):
